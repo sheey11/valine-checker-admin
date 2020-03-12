@@ -1,11 +1,12 @@
 <template lang="pug">
-  div(style="max-size: 100%;")
+  div(style="width: 100%; max-width: 1008px; margin: 0 auto;")
     div
-      h1.title {{ sitename }}
+      h1 Valine Checker
+      p.site-name {{ sitename }}
     div.card
       zi-tabs
         zi-tabs-item(label="评论" value="comment")
-          zi-note 评论
+          comment(v-for="c in this.comments" v-bind:key="c.id" v-bind="c")
         zi-tabs-item(label="日志" value="logs")
           zi-note 日志
 </template>
@@ -26,10 +27,7 @@ export default {
         }
     },
     mounted() {
-        console.log('damn')
         this.$http.get('/comments').then(res =>{
-            console.log('this is res')
-            console.log(res)
             this.sitename = res.data.site_name
             this.comments = res.data.comments
         }).catch(err => {
@@ -41,11 +39,17 @@ export default {
 </script>
 
 <style scoped>
-.title{
-    font-size: 30px;
+h1{
     font-weight: bold;
-    margin: 10px auto 20px 20px;
+    font-size: 30px;
+    margin: 10px 0 0 20px;
 }
+
+.site-name{
+    margin: 0 0 20px 25px;
+    font-size:15px;
+}
+
 .log-link{
     margin-right: 0;
     margin-left: auto;
@@ -53,6 +57,6 @@ export default {
 
 .card{
     box-sizing: border-box;
-    margin: 0 20px
+    margin: 0 20px;
 }
 </style>
