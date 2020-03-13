@@ -9,6 +9,8 @@ $ npm install
 $ cd ../pages
 $ npm install
 ```
+## 修改配置文件
+见 [valine-checker](https://github.com/Sheey11/valine-checker#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95), 修改 `server/checker/config.json`。
 ## 调试
 ```bash
 $ ./debug.sh
