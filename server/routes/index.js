@@ -57,9 +57,6 @@ router.get('/action', function(req, res, next){
 });
 
 router.get('/logs/list', function(req, res, next){
-  // TODO:
-  // 判断 valine-checker 是否在运行
-
   var lst = [];
 
   if(fs.existsSync('checker/logs/')){
