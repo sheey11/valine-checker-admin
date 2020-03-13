@@ -1,4 +1,5 @@
 #!/bin/sh
-node ./server/app.js &
-cd pages
+cd server
+DEBUG=server:* | npm run start &
+cd ../pages/
 npm run serve

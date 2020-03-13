@@ -29,7 +29,6 @@ export default {
       removeComments(id){
         for (let i = 0; i < this.comments.length; i++) {
           if (this.comments[i].id == id) {
-            console.log('i found that ' + id)
             this.comments.splice(i, 1);
             return
           }
@@ -40,11 +39,14 @@ export default {
     this.$http
       .get("/comments")
       .then(res => {
-        this.sitename = res.data.site_name;
-        this.comments = res.data.comments;
-      })
-      .catch(err => {
-        console.log(err);
+        if(res.data.code == 200){
+          this.sitename = res.data.site_name;
+          this.comments = res.data.comments;
+        }else{
+          this.$Toast.danger('获取评论失败，' + res.data.msg)
+        }
+      }).catch(err => {
+        this.$Toast.danger(err.toString())
       });
   }
 };

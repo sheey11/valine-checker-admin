@@ -158,6 +158,11 @@ commander@2.8.x:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
+connect-history-api-fallback@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.npm.taobao.org/connect-history-api-fallback/download/connect-history-api-fallback-1.6.0.tgz#8b32089359308d111115d81cad3fceab888f97bc"
+  integrity sha1-izIIk1kwjRERFdgcrT/Oq4iPl7w=
+
 constantinople@^3.0.1:
   version "3.1.2"
   resolved "https://registry.npm.taobao.org/constantinople/download/constantinople-3.1.2.tgz#d45ed724f57d3d10500017a7d3a889c1381ae647"

@@ -1,4 +1,5 @@
 #!/bin/sh
-node ./server/app.js &
 cd server
+DEBUG=server:* | yarn start &
+cd ../pages
 yarn serve

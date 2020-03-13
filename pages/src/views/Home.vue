@@ -26,7 +26,7 @@ export default {
         passwd: this.passwd
       }).then(res => {
         if(res.data.code == 200){
-          window.location = '/admin'
+          this.$router.push('admin');
         }else{
           this.$Toast.danger(res.data.msg)
         }

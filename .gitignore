@@ -247,3 +247,6 @@ server/checker/config.json
 
 # logs
 server/checker/logs/
+
+# vue dist
+server/public/**
