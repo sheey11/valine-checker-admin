@@ -4,6 +4,14 @@ var router = express.Router();
 var exec = require('child_process').exec;
 var fs = require('fs');
 
+var ifInjected = function(filename, res){
+  // 防注入
+  if(filename.indexOf("/" != -1) || filename.indexOf("\\") != -1){
+    return true;
+  }
+  return false;
+};
+
 router.post('/login', function(req, res, next) {
   if(req.body['uname'] == 'admin' && req.body['passwd'] == '123456'){
     // TODO:
@@ -71,7 +79,16 @@ router.get('/logs/list', function(req, res, next){
 
 router.get('/logs/read', function(req, res, next){
   var fname = req.query['filename'];
+
+  if(ifInjected(fname)){
+    res.status(403).json({
+      "code": 403,
+      "msg": "wrong file name."
+    });
+  }
+
   var path = 'checker/logs/' + fname;
+
   if(!fs.existsSync(path)){
     res.json({
       "code": -1,
@@ -89,6 +106,14 @@ router.get('/logs/read', function(req, res, next){
 
 router.get('/logs/delete', function(req, res, next){
   var fname = req.query['filename'];
+
+  if(ifInjected(fname)){
+    res.status(403).json({
+      "code": 403,
+      "msg": "wrong file name."
+    });
+  }
+
   var path = 'checker/logs/' + fname;
   
   if(fs.existsSync(path)){
