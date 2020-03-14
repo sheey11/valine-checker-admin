@@ -1,5 +1,6 @@
 #!/bin/sh
 cd server
-DEBUG=server:* | yarn start &
+export NODE_ENV=development
+yarn start &
 cd ../pages
 yarn serve

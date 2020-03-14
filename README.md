@@ -17,7 +17,7 @@ $ ./debug.sh
 # or
 $ ./debug.yarn.sh
 ```
-`express` 运行的服务器在 `localhost:3000`，`vue` 运行的服务器在 `localhost:8080`。  
+`express` 对 `vue` 有反向代理，所以直接访问 `http://localhost:3000` 即可。
 
 ## build
 ```bash
@@ -29,7 +29,8 @@ $ ./build.yarn.sh
 ## 部署
 首先 `build`，然后复制 `server` 文件夹到服务器上，运行 `express`:
 ```bash
-$ npm run start
+$ export NODE_ENV=prodction
+$ npm start
 ```
 
 

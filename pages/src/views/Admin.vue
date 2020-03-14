@@ -62,7 +62,7 @@ export default {
         // 读取选中日志
         this.selectedFile = e.name;
         this.$http
-          .get("/logs/read?filename=" + this.selectedFile)
+          .get("/api/logs/read?filename=" + this.selectedFile)
           .then(res => {
             if(res.data.code == 200){
               this.log = res.data.data
@@ -79,7 +79,7 @@ export default {
       deleteSelectedLogs(){
         // 删除选中日志
         this.$http
-          .get("/logs/delete?filename=" + this.selectedFile)
+          .get("/api/logs/delete?filename=" + this.selectedFile)
           .then(res => {
             if(res.data.code == 200){
               this.listLogs()
@@ -95,7 +95,7 @@ export default {
         this.files.splice(0, this.files.length)
         // 获取日志信息
         this.$http
-          .get("/logs/list")
+          .get("/api/logs/list")
           .then(res => {
             if(res.data.code == 200){
               for(let file of res.data.logs){
@@ -118,7 +118,7 @@ export default {
   mounted() {
     // 获取评论
     this.$http
-      .get("/comments")
+      .get("/api/comments")
       .then(res => {
         if(res.data.code == 200){
           this.loadingComents = false;

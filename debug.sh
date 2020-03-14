@@ -1,5 +1,6 @@
 #!/bin/sh
 cd server
-DEBUG=server:* | npm run start &
+export NODE_ENV=development
+npm run start &
 cd ../pages/
 npm run serve

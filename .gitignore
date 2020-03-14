@@ -250,3 +250,7 @@ server/checker/logs/
 
 # vue dist
 server/public/**
+
+# session db
+server/session-store.db
+

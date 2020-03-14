@@ -3,6 +3,9 @@ var createError = require('http-errors');
 var router = express.Router();
 var exec = require('child_process').exec;
 var fs = require('fs');
+var checkSession = require('../middlewares/check-session')
+
+router.use(checkSession);
 
 var ifInjected = function(filename, res){
   // 防注入
@@ -11,25 +14,6 @@ var ifInjected = function(filename, res){
   }
   return false;
 };
-
-router.post('/login', function(req, res, next) {
-  if(req.body['uname'] == 'admin' && req.body['passwd'] == '123456'){
-    // TODO:
-    // 创建 session 记录登录状态
-    res.json({
-      "code": 200,
-      "msg": "success"
-    })
-  }else{
-    res.json({
-      "code": -1,
-      "msg": "wrong username or password"
-    })
-  }
-});
-
-// TODO:
-// 以下方法需要验证是否已登录
 
 router.get('/comments', function(req, res, next){
   exec('python3 checker/comments.py ', function (error, stdout, stderr) {

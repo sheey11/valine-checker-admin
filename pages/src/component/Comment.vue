@@ -59,7 +59,7 @@ export default {
         },
         markAsSpam(){
             this.isChangingStatus = true
-            this.$http.get('/action?type=markspam&id=' + this.id).then(res => {
+            this.$http.get('/api/action?type=markspam&id=' + this.id).then(res => {
                 if(res.data.code == 200){
                     this.$Toast.success(res.data.msg)
                 }else{
@@ -74,7 +74,7 @@ export default {
         },
         hide(){
             this.isChangingStatus = true
-            this.$http.get('/action?type=hide&id=' + this.id).then(res => {
+            this.$http.get('/api/action?type=hide&id=' + this.id).then(res => {
                 if(res.data.code == 200){
                     this.$Toast.success(res.data.msg)
                 }else{
@@ -88,7 +88,7 @@ export default {
         },
         markAsNormal(){
             this.isChangingStatus = true
-            this.$http.get('/action?type=marknormal&id=' + this.id).then(res => {
+            this.$http.get('/api/action?type=marknormal&id=' + this.id).then(res => {
                 if(res.data.code == 200){
                     this.$Toast.success(res.data.msg)
                 }else{
@@ -107,7 +107,7 @@ export default {
         },
         remove(){
             this.isChangingStatus = true
-            this.$http.get('/action?type=delete&id=' + this.id).then(res => {
+            this.$http.get('/api/action?type=delete&id=' + this.id).then(res => {
                 if(res.data.code == 200){
                     this.$Toast.success(res.data.msg)
                     this.$emit('removed', this.id)
