@@ -9,9 +9,7 @@ import "@zeit-ui/vue/dist/zeit-ui.css";
 import axios from "axios";
 
 Vue.use(ZeitUI);
-Vue.prototype.$http = axios.create({
-  baseURL: "http://localhost:3000"
-});
+Vue.prototype.$http = axios
 
 export default {
   name: "App"
