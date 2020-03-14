@@ -1,10 +1,14 @@
 <template lang="pug">
   div(style="width: 100%; max-width: 1008px; margin: 0 auto;")
-    div
-      h1 Valine Checker
-      vue-content-loading.site-name(:width="7" :height="1" v-if="loadingComents" style="width:115px; height:15px")
-        rect(width="7" height="1" rx="0.3" ry="0.3")
-      p.site-name(v-if="!loadingComents") {{ sitename }}
+    div(style="display: flex;")
+      div
+        h1 Valine Checker
+        vue-content-loading.site-name(:width="7" :height="1" v-if="loadingComents" style="width:115px; height:15px")
+          rect(width="7" height="1" rx="0.3" ry="0.3")
+        p.site-name(v-if="!loadingComents") {{ sitename }}
+      div.valine-checker-status-wrapper
+        zi-dot(:type="vcStatusDotType")
+        p(style="margin-left: 10px;") {{ valineCheckerStatus }}
     div.card
       zi-tabs
         zi-tabs-item(label="评论" value="comment")
@@ -24,8 +28,17 @@
               p {{ logStatus }}
               zi-button(:disabled="selectedFile==''" size="mini" style="margin-right: 0; margin-left:auto;" @click="deleteSelectedLogs") 删除选中日志
             div.log
-              zi-textarea.log-text(readonly="true" :value="log" rows=23)
+              zi-textarea.log-text(readonly="true" :value="log" :rows="23")
               zi-files.file-tree(:files="files" @file-click="clickHandler")
+        zi-tabs-item(label="Valine Checker" value="vc")
+          zi-fieldset.vc-status-content-wrapper
+            div(style="display: flex")
+              zi-dot(:type="vcStatusDotType")
+              p(style="margin-left: 10px;") {{ valineCheckerStatus }}
+            template(v-slot:footer)
+              div.vc-action-buttons
+                zi-button(size="mini" type="success" auto :disabled="valineCheckerStatus == '正在运行'" @click='launchVC') 启动
+                zi-button(size="mini" type="danger" auto :disabled="valineCheckerStatus != '正在运行'" @click='stopVC') 停止
 </template>
 
 <script>
@@ -47,6 +60,9 @@ export default {
       logStatus: '正在加载...',
       files: [],
       selectedFile: '',
+      valineCheckerStatus: '未知',
+      vcStatusDotType: 'primary',
+      timer: 0,
     }
   },
   methods: {
@@ -84,6 +100,7 @@ export default {
             if(res.data.code == 200){
               this.listLogs()
               this.$Toast.success('已删除。')
+              this.selectedFile = ''
             }else{
               this.$Toast.danger('删除失败，' + res.data.msg)
             }
@@ -97,6 +114,7 @@ export default {
         this.$http
           .get("/api/logs/list")
           .then(res => {
+            console.log(res)
             if(res.data.code == 200){
               for(let file of res.data.logs){
                 this.files.push({
@@ -112,6 +130,75 @@ export default {
           }).catch(err => {
             this.$Toast.danger(err.toString())
             this.logStatus = '获取日志失败。'
+          });
+      },
+      showVCErrMsg(){
+        this.$http
+          .get("/api/vc/errmsg" + this.selectedFile)
+          .then(res => {
+            this.$Toast.danger('错误信息：'+ res.msg)
+          }).catch(err => {
+            this.$Toast.danger(err.toString())
+          });
+      },
+      loadVCStatus(){
+        this.$http
+          .get("/api/vc/status")
+          .then(res => {
+            if(res.data.code == 200){
+              switch(res.data.status){
+                case 'sleeping':
+                  this.valineCheckerStatus = '未运行'
+                  this.vcStatusDotType = 'primary'
+                  break;
+                case 'failure':
+                  this.valineCheckerStatus = '运行失败'
+                  this.vcStatusDotType = 'danger'
+                  this.showVCErrMsg()
+                  break;
+                case 'error':
+                  this.valineCheckerStatus = '运行出错'
+                  this.vcStatusDotType = 'danger'
+                  this.showVCErrMsg()
+                  break;
+                case 'running':
+                  this.valineCheckerStatus = '正在运行'
+                  this.vcStatusDotType = 'success'
+                  break;
+              }
+            }else{
+              this.valineCheckerStatus = '未知'
+              this.$Toast.danger('获取 Valine Checker 状态失败：' + res.data.msg)
+            }
+          }).catch(err => {
+            this.$Toast.danger(err.toString())
+          });
+      },
+      launchVC(){
+        this.$http
+          .get("/api/vc/launch" + this.selectedFile)
+          .then(res => {
+            if(res.data.code == 200){
+              this.valineCheckerStatus = 'running'
+              this.$Toast.success('启动成功')
+            }
+          }).catch(err => {
+            this.$Toast.danger(err.toString())
+          });
+      },
+      stopVC(){
+        this.$http
+          .get("/api/vc/stop" + this.selectedFile)
+          .then(res => {
+            if(res.data.code == 200){
+              this.loadVCStatus()
+              this.$Toast.success('已停止')
+            }else{
+              this.loadVCStatus()
+              this.$Toast.danger('操作失败: ' + res.data.msg)
+            }
+          }).catch(err => {
+            this.$Toast.danger(err.toString())
           });
       }
   },
@@ -131,7 +218,23 @@ export default {
         this.$Toast.danger(err.toString())
       });
       
+      // 获取日志
       this.listLogs()
+
+      // 获取 valine-checker 状态
+      this.loadVCStatus()
+
+      // 定时刷新 vc 状态
+      if(this.timer){
+          clearInterval(this.timer)
+      }else{
+          this.timer = setInterval(()=>{
+            this.loadVCStatus()
+          },5000)
+      }
+  },
+  destroyed(){
+    clearInterval(this.timer)
   }
 };
 </script>
@@ -147,6 +250,14 @@ h1 {
   color: rgb(48, 48, 48);
   margin: 0 0 15px 25px;
   font-size: 15px;
+}
+
+.valine-checker-status-wrapper{
+  display: flex;
+  margin: auto 20px auto auto;
+  text-align: center;
+  vertical-align: center;
+  font-size: 13px;
 }
 
 .comment-wrapper{
@@ -185,5 +296,14 @@ h1 {
 .card {
   box-sizing: border-box;
   margin: 0 20px;
+}
+
+.vc-status-content-wrapper{
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+
+.vc-action-buttons *{
+  margin-right: 10px;
 }
 </style>

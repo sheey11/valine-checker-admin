@@ -16,7 +16,7 @@ var app = express();
 app.use(session({
   secret: ['23w6x7TExZY36xMX', 'toLxL6t6n6z86i3H', 'bKKmGoY4V6Bw2876', 'wdt4pnfy86Z78EF2'],
   name: 'valine-checker-server',
-  cookie: {maxAge: 80000 },
+  cookie: {maxAge: 1 * 60 * 60 * 1000 }, // 1 hour
   store: new LokiStore(),
   resave: false,
   saveUninitialized: true,
@@ -29,7 +29,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api', actionRouter)
 app.use(history());
-
 
 // in dev
 var env = process.env.NODE_ENV || 'development';
