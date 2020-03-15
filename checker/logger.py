@@ -10,8 +10,8 @@ log_file = None
 
 def init():
     global log_file
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
+    if not os.path.exists('checker/logs'):
+        os.mkdir('checker/logs')
     fname = './checker/logs/valine-checker-%s.log' % datetime.now().strftime('%Y-%m-%d')
     log_file = open(fname, 'a+')
 
