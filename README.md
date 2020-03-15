@@ -48,7 +48,7 @@ $ ./build.yarn.sh
 ```
 
 ## 部署
-使用 dist 分支的版本。
+请使用 [dist](https://github.com/Sheey11/valine-checker-admin/tree/dist) 分支的版本。
 # FAQ
 - **Q: 为什么代码写的这么垃圾？**  
   A: 别问，问就是没搞过前端。
