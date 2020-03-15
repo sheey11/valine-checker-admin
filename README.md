@@ -32,23 +32,8 @@ $ npm install
 $ source server/checker/config.env
 ```
 
-## 调试
-```bash
-$ ./debug.sh
-# or
-$ ./debug.yarn.sh
+## 运行
+```shell
+$ export NODE_ENV=production
+$ npm start
 ```
-`express` 对 `vue` 有反向代理，所以直接访问 `http://localhost:3000` 即可。
-
-## build
-```bash
-$ ./build.sh
-# or
-$ ./build.yarn.sh
-```
-
-## 部署
-使用 dist 分支的版本。
-# FAQ
-- **Q: 为什么代码写的这么垃圾？**  
-  A: 别问，问就是没搞过前端。
