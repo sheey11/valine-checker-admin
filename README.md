@@ -13,7 +13,7 @@
 - VC 出错时邮件通知
 
 # 使用方法
-需要 `node` 以及 `python3` 环境。
+需要 `node` 以及 `python3` (>=3.7)环境。
 ## 安装依赖库
 ```bash
 $ cd pages

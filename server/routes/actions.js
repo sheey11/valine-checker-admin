@@ -20,7 +20,7 @@ var ifInjected = (filename, res) => {
 // 对 Comments 的操作
 // ====================
 router.get('/comments', (req, res, next) => {
-  exec('python3 checker/comments.py ', function (error, stdout, stderr) {
+  exec(process.env.PYTHON_COMMAND + ' checker/comments.py ', function (error, stdout, stderr) {
     if(stderr){
       res.json({
         'code': -1,
@@ -37,7 +37,7 @@ router.get('/comments', (req, res, next) => {
 router.get('/action', (req, res, next) => {
   var type = req.query['type'];
   var id = req.query['id'];
-  exec('python3 checker/action.py ' + type + ' ' + id, function (error, stdout, stderr) {
+  exec(process.env.PYTHON_COMMAND + ' checker/action.py ' + type + ' ' + id, function (error, stdout, stderr) {
     if(stderr){
       res.json({
         'code': -1,

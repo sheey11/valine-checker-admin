@@ -10,7 +10,7 @@ var manMadeKill = false;
 var vcProcess;
 
 init = function(){
-    vcProcess = spawn('python3', ['checker/valine-checker.py']);
+    vcProcess = spawn(process.env.PYTHON_COMMAND, ['checker/valine-checker.py']);
     vcProcess.on('error', (err) => {
         exports.status = 'failure';
         exports.errmsg = err.message.toString('utf-8');
