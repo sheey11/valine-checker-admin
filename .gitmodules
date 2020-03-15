@@ -1,4 +1,4 @@
 [submodule "server/checker"]
-	path = server/checker
+	path = checker
 	url = https://github.com/Sheey11/valine-checker.git
 	branch = deployment
