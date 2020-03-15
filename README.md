@@ -48,11 +48,7 @@ $ ./build.yarn.sh
 ```
 
 ## 部署
-首先 `build`，然后复制 `server` 文件夹到服务器上，安装依赖，最后运行 `express`:
-```bash
-$ export NODE_ENV=prodction
-$ npm start
-```
+使用 dist 分支的版本。
 # FAQ
 - **Q: 为什么代码写的这么垃圾？**  
   A: 别问，问就是没搞过前端。
