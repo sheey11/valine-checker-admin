@@ -114,7 +114,6 @@ export default {
         this.$http
           .get("/api/logs/list")
           .then(res => {
-            console.log(res)
             if(res.data.code == 200){
               for(let file of res.data.logs){
                 this.files.push({
