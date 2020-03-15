@@ -135,7 +135,7 @@ export default {
         this.$http
           .get("/api/vc/errmsg" + this.selectedFile)
           .then(res => {
-            this.$Toast.danger('错误信息：'+ res.msg)
+            this.$Toast.danger('错误信息：'+ res.data.msg)
           }).catch(err => {
             this.$Toast.danger(err.toString())
           });

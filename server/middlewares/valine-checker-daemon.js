@@ -13,12 +13,12 @@ init = function(){
     vcProcess = spawn('python3', ['checker/valine-checker.py']);
     vcProcess.on('error', (err) => {
         exports.status = 'failure';
-        exports.errmsg = err.message;
+        exports.errmsg = err.message.toString('utf-8');
     });
     
     vcProcess.stderr.on('data', (chank) => {
         if(manMadeKill) return;
-        exports.errmsg = chank;
+        exports.errmsg = chank.toString('utf-8');
     });
     
     vcProcess.on('close', (code, signal) => {
