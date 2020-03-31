@@ -252,3 +252,6 @@ checker/logs/
 # session db
 session-store.db
 
+# folders
+pages/
+server/
