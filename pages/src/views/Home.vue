@@ -2,8 +2,8 @@
   div
     h1.title {{ title }}
       .login-wrap
-        zi-input(placeholder="用户名" autofocus="true" v-model="uname")
-        zi-input(placeholder="密码" style="margin: 10px 0" v-model="passwd" _type="password")
+        zi-input(placeholder="用户名" autofocus="true" v-model="uname" @keydown="inputKeydown($event)")
+        zi-input(placeholder="密码" style="margin: 10px 0" v-model="passwd" _type="password" @keydown="inputKeydown($event)")
         zi-button(type="success" style="margin-top: 20px" @click="doLogin" v-bind:loading="isLoading") 登陆
 </template>
 
@@ -35,6 +35,11 @@ export default {
         this.$Toast.danger(err.toString())
         this.isLoading = false;
       })
+    },
+    inputKeydown(ev){
+      if(ev.keyCode == 13){
+        this.doLogin();
+      }
     }
   }
 }

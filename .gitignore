@@ -254,3 +254,4 @@ server/public/**
 # session db
 server/session-store.db
 
+yarn.lock
