@@ -21,5 +21,6 @@ def logging(msg, level='info', prnt = False):
         init()
     log = '[%s][%s]\t%s' % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), level.upper(), msg)
     log_file.write(log + '\n')
+    log_file.flush()
     if prnt:
         print(colour_sign[level.lower()] + log + colour_sign['info'])

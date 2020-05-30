@@ -137,23 +137,24 @@ def init():
     query = lc.Query('Comment')
 
 def check():
-    try:
-        lst = check_new_comments()
-        send_emails(lst)
-        logging('等待 %d 秒...' % config['interval'])
-    except Exception as e:
-        logging('Error encountered:',level = 'error', prnt = True)
-        for line in traceback.format_exc().split('\n'):
-            logging(line, level = 'error', prnt = True)
-        logging('重新登录 leancloud...', prnt = True)
-        init()
+    lst = check_new_comments()
+    send_emails(lst)
+    logging('等待 %d 秒...' % config['interval'])
 
+# look at this weird structure
 async def main():
     logging('Valine-Cheker 开始初始化。', prnt = True)
     init()
     while True:
-        check()
-        await asyncio.sleep(config['interval'])
+        try:
+            check()
+            await asyncio.sleep(config['interval'])
+        except:
+            logging('Error encountered:',level = 'error', prnt = True)
+            for line in traceback.format_exc().split('\n'):
+                logging(line, level = 'error', prnt = True)
+            logging('重新登录 leancloud...', prnt = True)
+            init()
 
 if __name__ == '__main__':
     asyncio.run(main())

@@ -3,6 +3,8 @@ import requests
 VERIFY_URL = 'https://rest.akismet.com/1.1/verify-key'
 CHECK_URL = 'https://%s.rest.akismet.com/1.1/comment-check'
 
+varified = False
+
 def verify_key(key: str, blog: str) -> bool:
     data = {
         'key': key,
@@ -14,10 +16,13 @@ def verify_key(key: str, blog: str) -> bool:
     return False
 
 def init(key: str, blog: str) -> bool:
-    global CHECK_URL
+    global CHECK_URL, varified
+    if varified:
+        return True
     if not verify_key(key, blog):
-        return False
+            return False
     CHECK_URL = CHECK_URL % key
+    varified = True
     return True
 
 def check(blog, user_ip, user_agent, permalink, comment_content, comment_author, comment_author_email, comment_author_url):
