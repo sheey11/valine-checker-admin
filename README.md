@@ -21,7 +21,7 @@ $ cd checker
 $ python3 -m pip install -r requirements.txt
 ```
 ## 修改配置文件
-复制一份 `server/config.example.env` 到 `server/config.env`，修改配置项。  
+复制一份 `checker/config.example.env` 到 `checker/config.env`，修改配置项。  
 配置项与 [Valine Admin](https://github.com/DesertsP/Valine-Admin#快速部署) 基本一致，不一样的配置项有：
 - `BLOGGER_MAIL`，此项可以设置多个，中间由逗号隔开。
 - `LOGIN_USERNAME`，登陆时的用户名。
@@ -30,7 +30,7 @@ $ python3 -m pip install -r requirements.txt
 
 然后应用配置项
 ```shell
-$ source server/checker/config.env
+$ source checker/config.env
 ```
 > 你也可以直接在部署环境里直接添加环境变量。
 
