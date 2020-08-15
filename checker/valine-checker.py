@@ -3,8 +3,8 @@ import json, time, threading, smtplib, asyncio, traceback, threading
 from smtplib import SMTPHeloError, SMTPAuthenticationError
 from email.mime.text import MIMEText
 from email.utils import formataddr
-from logger import logging
-from config import load_config
+from .logger import logging
+from .config import load_config
 import akismet
 
 config = {}
@@ -39,11 +39,11 @@ def login_to_smtp() -> str:
         return "用户名或密码错误，无法登陆 SMTP 服务器"
     return ''
 
-def send_email(content: str, frm: str, to: list, subject: str, sender_name: str, receiver_name: str = '') -> bool:
+def send_email(content: str, frm: str, to: str, subject: str, sender_name: str, receiver_name: str = '') -> bool:
     msg = MIMEText(content, 'html', 'utf-8')
     msg['Subject'] = subject
-    msg['From'] = formataddr([sender_name, frm])
-    msg['To'] = ','.join([formataddr([receiver_name, t]) for t in to])
+    msg['From'] = formataddr((sender_name, frm))
+    msg['To'] = formataddr((receiver_name, to))
     try:
         server.sendmail(frm, to, msg.as_string())
         return True
@@ -52,7 +52,7 @@ def send_email(content: str, frm: str, to: list, subject: str, sender_name: str,
 
 def send_replay_email(comment) -> bool:
     parent_comment = query.get(comment.get('pid'))
-    if(parent_comment.get('email') == None):
+    if(parent_comment.get('mail') == None):
         return True
     mail_template = config['mail_template']
     mail_template = mail_template.replace('${SITE_NAME}', config['site_name'])
@@ -65,7 +65,7 @@ def send_replay_email(comment) -> bool:
     subject = config['email_subject']
     subject = subject.replace('${PARENT_NICK}', parent_comment.get('nick'))
     subject = subject.replace('${SITE_NAME}', config['site_name'])
-    return send_email(mail_template, config['smtp_mail'], comment.get['mail'], subject, config['sender_name'], comment.get('nick'))
+    return send_email(mail_template, config['smtp_mail'], comment.get('mail'), subject, config['sender_name'], comment.get('nick'))
 
 
 def send_admin_email(comment) -> bool:
@@ -149,6 +149,9 @@ async def main():
         try:
             check()
             await asyncio.sleep(config['interval'])
+        except KeyboardInterrupt:
+            logging('退出 Valine-Chekcer...', prnt = True)
+            exit(0)
         except:
             logging('Error encountered:',level = 'error', prnt = True)
             for line in traceback.format_exc().split('\n'):
