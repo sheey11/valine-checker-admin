@@ -12,8 +12,7 @@ def init():
     global log_file
     if not os.path.exists('logs'):
         os.mkdir('logs')
-    fname = './logs/valine-checker-%s.log' % datetime.now().strftime('%Y-%m-%d')
-    #fname = './checker/logs/valine-checker-%s.log' % datetime.now().strftime('%Y-%m-%d')
+    fname = './checker/logs/valine-checker-%s.log' % datetime.now().strftime('%Y-%m-%d')
     log_file = open(fname, 'a+')
 
 def logging(msg, level='info', prnt = False):
