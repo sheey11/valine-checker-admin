@@ -14,6 +14,10 @@
 
 # 使用方法
 需要 `node` 以及 `python3` (>=3.7)环境。
+
+```bash
+$ git clone https://github.com/Sheey11/valine-checker-admin.git
+```
 ## 安装依赖库
 ```bash
 $ npm install
